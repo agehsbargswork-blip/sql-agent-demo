@@ -6,6 +6,10 @@ library(dotenv)
 
 set.seed(123)
 
+sample_one <- function(values) {
+  values[sample.int(length(values), 1)]
+}
+
 dotenv::load_dot_env()
 
 connection <- DBI::dbConnect(
@@ -65,9 +69,8 @@ stopifnot(!any(is.na(platform_id)))
 device_id <- vapply(
   platform_name,
   function(selected_platform) {
-    sample(
-      devices$id[devices$platform_name == selected_platform],
-      1
+    sample_one(
+      devices$id[devices$platform_name == selected_platform]
     )
   },
   integer(1)
@@ -94,15 +97,14 @@ campaign_id <- rep(
 )
 
 for (user in which(is_paid)) {
-  selected_channel <- sample(paid_channel_ids, 1)
+  selected_channel <- sample_one(paid_channel_ids)
 
   acquisition_channel_id[user] <- selected_channel
 
-  campaign_id[user] <- sample(
+  campaign_id[user] <- sample_one(
     campaigns$id[
       campaigns$acquisition_channel_id == selected_channel
-    ],
-    1
+    ]
   )
 }
 
