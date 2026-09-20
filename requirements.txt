@@ -1,5 +1,8 @@
-openai-agents
+openai
 psycopg[binary]
 python-dotenv
 jupyter
 pandas
+pydantic
+scikit-learn
+sqlglot
