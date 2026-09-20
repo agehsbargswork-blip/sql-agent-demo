@@ -1,0 +1,5 @@
+openai-agents
+psycopg[binary]
+python-dotenv
+jupyter
+pandas
