@@ -1,6 +1,12 @@
 # Create a SQL training set for the mobile-app database.
 # The output contains exactly three columns: prompt, tags and sql_text.
 
+# install.packages(c("DBI", "RPostgres", "dotenv"))
+
+library(DBI)
+library(RPostgres)
+library(dotenv)
+
 make_examples <- function(prompts, tags, sql_text, expected_n) {
   stopifnot(length(prompts) == expected_n)
   stopifnot(length(sql_text) == expected_n)
@@ -384,18 +390,61 @@ stopifnot(
   )
 )
 
-dir.create(
-  "training",
-  showWarnings = FALSE,
-  recursive = TRUE
+# Write Table
+
+dotenv::load_dot_env()
+
+connection <- DBI::dbConnect(
+  RPostgres::Postgres(),
+  host = Sys.getenv("PGHOST"),
+  port = as.integer(Sys.getenv("PGPORT")),
+  dbname = Sys.getenv("PGDATABASE"),
+  user = Sys.getenv("PGUSER"),
+  password = Sys.getenv("PGPASSWORD"),
+  sslmode = "require"
 )
 
-write.csv(
+DBI::dbExecute(
+  connection,
+  "
+  CREATE TABLE IF NOT EXISTS training_set (
+      prompt TEXT NOT NULL,
+      tags TEXT NOT NULL,
+      sql_text TEXT NOT NULL
+  );
+  "
+)
+
+DBI::dbExecute(
+  connection,
+  "DELETE FROM training_set;"
+)
+
+DBI::dbWriteTable(
+  connection,
+  DBI::Id(schema = "public", table = "training_set"),
   training_set,
-  "training/training_queries.csv",
-  row.names = FALSE,
-  na = ""
+  append = TRUE,
+  row.names = FALSE
 )
 
+# Test
+
+result <- DBI::dbGetQuery(
+  connection,
+  "
+  SELECT
+      tags,
+      COUNT(*) AS examples
+  FROM training_set
+  GROUP BY tags
+  ORDER BY tags;
+  "
+)
+
+print(result)
 cat("Created", nrow(training_set), "training examples.\n")
-print(table(training_set$tags))
+
+# Cleanup
+
+DBI::dbDisconnect(connection)
