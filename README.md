@@ -14,6 +14,7 @@ PostgreSQL queries against synthetic mobile-app data.
 ## Repository contents
 
 - `create_tables/` — SQL schema, fact-table SQL and R data-generation scripts.
+- `DATABASE_GUIDE.md` — table relationships and querying instructions for LLMs.
 - `sample_data.sql` — optional small SQL seed data.
 - `sql_agent_demo.ipynb` — interactive agent demonstration.
 - `requirements.txt` — Python dependencies.
