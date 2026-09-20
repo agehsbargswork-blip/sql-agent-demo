@@ -15,6 +15,7 @@ PostgreSQL queries against synthetic mobile-app data.
 
 - `create_tables/` — SQL schema, fact-table SQL and R data-generation scripts.
 - `DATABASE_GUIDE.md` — table relationships and querying instructions for LLMs.
+- `training/create_training_set.R` — generates 115 prompt-to-SQL training examples.
 - `sample_data.sql` — optional small SQL seed data.
 - `sql_agent_demo.ipynb` — interactive agent demonstration.
 - `requirements.txt` — Python dependencies.
