@@ -1,0 +1,6 @@
+/*
+Optional small SQL seed file.
+
+The main synthetic dataset will be generated as CSV files by the R script
+that will be added in the next stage of this project.
+*/
