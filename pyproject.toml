@@ -10,7 +10,7 @@ requires-python = ">=3.10"
 dependencies = [
     "openai",
     "pandas",
-    "psycopg[binary]",
+    "pg8000",
     "pydantic",
     "python-dotenv",
     "scikit-learn",
