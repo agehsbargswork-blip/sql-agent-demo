@@ -1,0 +1,11 @@
+openai
+pandas
+pg8000
+pydantic
+python-dotenv
+scikit-learn
+sqlglot
+
+[dev]
+jupyter
+pytest

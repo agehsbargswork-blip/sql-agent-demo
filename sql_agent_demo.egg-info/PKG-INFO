@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: sql-agent-demo
+Version: 0.1.0
+Summary: Two-agent natural-language to PostgreSQL workflow
+Requires-Python: >=3.10
+Requires-Dist: openai
+Requires-Dist: pandas
+Requires-Dist: pg8000
+Requires-Dist: pydantic
+Requires-Dist: python-dotenv
+Requires-Dist: scikit-learn
+Requires-Dist: sqlglot
+Provides-Extra: dev
+Requires-Dist: jupyter; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
