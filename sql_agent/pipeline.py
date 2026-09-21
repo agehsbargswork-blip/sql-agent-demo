@@ -15,8 +15,9 @@ class SQLResult:
     question: str
     writer: WriterResult
     reviewer: ReviewerResult
-    final_sql: str
+    final_sql: str | None
     data: pd.DataFrame | None
+    error: str | None = None
 
 
 def ask_sql(question, execute=True, number_of_examples=8):
@@ -46,8 +47,20 @@ def ask_sql(question, execute=True, number_of_examples=8):
     elif reviewer_result.corrected_sql:
         final_sql = reviewer_result.corrected_sql
     else:
-        raise RuntimeError(
-            "The reviewer rejected the query without providing a correction."
+        issues = "\n".join(
+            f"- {issue}" for issue in reviewer_result.issues
+        )
+        return SQLResult(
+            question=question,
+            writer=writer_result,
+            reviewer=reviewer_result,
+            final_sql=None,
+            data=None,
+            error=(
+                "The SQL reviewer could not approve a query for this question:\n"
+                f"{question}\n\n"
+                f"Reviewer issues:\n{issues}"
+            ),
         )
 
     validate_read_only(final_sql)
